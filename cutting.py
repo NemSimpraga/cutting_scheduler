@@ -20,5 +20,5 @@ def calc_cut(intake_today):
     return g1+g2+g3+g4+g5
 
 intake = [120,70,20,100,80]
-
+ 
 print = calc_cut(120)
