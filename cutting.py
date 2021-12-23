@@ -4,13 +4,22 @@
 
 import pandas as pd
 
-stats = {
+dict_schedule = {
+    0 : pd.Series([0, 0, 0, 0, 0, 0], index=['g1', 'g2', 'g3', 'g4', 'g5', 'sum']),
+    1 : pd.Series([0, 0, 0, 0, 0, 0], index=['g1', 'g2', 'g3', 'g4', 'g5', 'sum']),
+    2 : pd.Series([0, 0, 0, 0, 0, 0], index=['g1', 'g2', 'g3', 'g4', 'g5', 'sum']),
+    3 : pd.Series([0, 0, 0, 0, 0, 0], index=['g1', 'g2', 'g3', 'g4', 'g5', 'sum']),
+    4 : pd.Series([0, 0, 0, 0, 0, 0], index=['g1', 'g2', 'g3', 'g4', 'g5', 'sum']), 
+    } 
+schedule = pd.DataFrame(dict_schedule)
+
+dict_stats = {
     'avg' : pd.Series([365, 375, 385, 395, 405], index=['g1', 'g2', 'g3', 'g4', 'g5']),
     'stddev' : pd.Series([4.9, 5.1, 5, 5.3, 5.9], index=['g1', 'g2', 'g3', 'g4', 'g5']),
     'f' : pd.Series([0.28571429, 0.28571429, 0.14285714, 0.14285714, 0.14285714], index=['g1', 'g2', 'g3', 'g4', 'g5']),
 }
 max_cap = 30000
-df_stats = pd.DataFrame(stats)
+stats = pd.DataFrame(dict_stats)
 
 to_cut = pd.Series([0,0,0,0,0], index=['g1', 'g2', 'g3', 'g4', 'g5'])
 leftovers = pd.Series([0,0,0,0,0], index=['g1', 'g2', 'g3', 'g4', 'g5'])
@@ -22,12 +31,8 @@ def cut(intake, day):
 
 def processing(animals, day):
     cut(to_cut, day)
-    leftovers = pd.Series(animals*df_stats['avg']*df_stats['f'], index=['g1', 'g2', 'g3', 'g4', 'g5'])
+    leftovers = pd.Series(animals*stats['avg']*stats['f'], index=['g1', 'g2', 'g3', 'g4', 'g5'])
     
-
-
-#cutting = slaughter_intake.shift(1,fill_value=slaughter_intake[slaughter_intake.size-1])
-
 
 for day, animals in enumerate(slaughter_intake):
     processing(animals, day)
