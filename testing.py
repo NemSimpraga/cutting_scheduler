@@ -1,7 +1,7 @@
 import pandas as pd
 
 dict_schedule = {
-    5 : pd.Series([0, 0, 0, 0, 0, 0], index=['g1', 'g2', 'g3', 'g4', 'g5', 'sum']),
+    0 : pd.Series([0, 0, 0, 0, 0, 0], index=['g1', 'g2', 'g3', 'g4', 'g5', 'sum']),
     1 : pd.Series([0, 0, 0, 0, 0, 0], index=['g1', 'g2', 'g3', 'g4', 'g5', 'sum']),
     2 : pd.Series([0, 0, 0, 0, 0, 0], index=['g1', 'g2', 'g3', 'g4', 'g5', 'sum']),
     3 : pd.Series([0, 0, 0, 0, 0, 0], index=['g1', 'g2', 'g3', 'g4', 'g5', 'sum']),
@@ -15,6 +15,9 @@ dict_stats = {
     'f' : pd.Series([0.28571429, 0.28571429, 0.14285714, 0.14285714, 0.14285714], index=['g1', 'g2', 'g3', 'g4', 'g5']),
 }
 stats = pd.DataFrame(dict_stats)
+
+def slaughter(sl_intake, day):
+    return sl_intake*stats['f']*stats['avg']
 
 def cut(intake, day):
     current_cap = 0
@@ -50,14 +53,11 @@ def cut(intake, day):
 
 slaughter_intake = pd.Series([120,70,20,100,80])
 
-def slaughter(sl_intake, day):
-    return sl_intake*stats['f']*stats['avg'], day+1
 
 for day, animals in enumerate(slaughter_intake):
-    cut(slaughter(animals, day)
+    leftover = slaughter()
 
 #print(schedule)
-#to_cut = pd.Series([12514.2859, 12857.14305, 6600, 6771.428436, 6942.857004], index=['g1', 'g2', 'g3', 'g4', 'g5'])
 
 
 
