@@ -18,7 +18,6 @@ dict_stats = {
     'stddev' : pd.Series([4.9, 5.1, 5, 5.3, 5.9], index=['g1', 'g2', 'g3', 'g4', 'g5']),
     'f' : pd.Series([0.28571429, 0.28571429, 0.14285714, 0.14285714, 0.14285714], index=['g1', 'g2', 'g3', 'g4', 'g5']),
 }
-max_cap = 30000
 stats = pd.DataFrame(dict_stats)
 
 to_cut = pd.Series([0,0,0,0,0], index=['g1', 'g2', 'g3', 'g4', 'g5'])
