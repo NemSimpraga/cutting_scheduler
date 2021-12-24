@@ -37,7 +37,33 @@ for day, animals in enumerate(slaughter_intake):
     processing(animals, day)
 
 
-  
+ def cut(intake, day):
+    current_cap = 0
+    max_cap = 30000
+    while current_cap < max_cap:
+        if current_cap + 365*2 > max_cap and current_cap + 365 > max_cap: 
+            break;
+        elif current_cap + 365 < max_cap and intake['g1'] > 0:
+            intake['g1'] -= 365; 
+            current_cap += 365;
+            schedule[day]['g1'] += 365;
+        if intake['g1'] > 0: intake['g1'] -= 365*2; current_cap += 365*2; schedule[day]['g1'] += 365*2;
+        if current_cap + 375*2 > max_cap and current_cap + 375 > max_cap: 
+            break;
+        elif current_cap + 375 < max_cap and intake['g2'] > 0:
+            intake['g2'] -= 375; 
+            current_cap += 375;
+            schedule[day]['g2'] += 375;
+        if intake['g2'] > 0: intake['g2'] -= 375*2; current_cap += 375*2; schedule[day]['g2'] += 375*2;
+        if current_cap + 385 > max_cap or intake['g3'] < 0: break;
+        if intake['g3'] > 0: intake['g3'] -= 385; current_cap += 385; schedule[day]['g3'] += 385;
+        if current_cap + 395 > max_cap: break;
+        if intake['g4'] > 0: intake['g4'] -= 395; current_cap += 395; schedule[day]['g4'] += 395;
+        if current_cap + 405 > max_cap: break;
+        if intake['g5'] > 0: intake['g5'] -= 405; current_cap += 405; schedule[day]['g5'] += 405;
+    schedule[day]['sum'] = current_cap
+    return intake
+ 
 #def calc_cut(intake):
 #    calc = {
 #        'mon' : pd.Series(slaughter_intake['mon']*df['avg'])*df['f'],

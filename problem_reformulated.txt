@@ -1,0 +1,24 @@
+You have a meat processing facility. You process the animals from livestock, to carcasses ready for cutting into smaller pieces. 
+Next week, you are getting this many animals which you need to process for cutting:
+
+                       Mon  Tue   Wed  Thu  Fri
+Animals to slaughter    120   70    20  100   80
+
+You can slaughter as many animals you want per day, after which you'll get carcasses grouped into groups according to the below weight and frequency table (in kg):
+
+Group       AVG   STDDEV        F
+    g1      365   4.9       0.28571429
+    g2      375   5.1       0.28571429
+    g3      385   5.0       0.14285714
+    g4      395   5.3       0.14285714
+    g5      405   5.9       0.14285714
+
+After slaughtering them every day, you prepare them for cutting. You can cut them the next day, at the earliest.
+If you can cut a maximum of 30000 kg per day, on a First In First Out strategy, what will the schedule table for cutting these carcases look like for the next week?
+    
+	Mon  Tue  Wen  Thu  Fri
+g1	
+g2
+g3
+g4
+g5
