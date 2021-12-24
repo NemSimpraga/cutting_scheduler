@@ -39,6 +39,7 @@ def cut(intake, day):
     global leftover
     leftover = intake
     
+    
 #slaughter_intake = pd.Series([80,90,40,60,120])
 #slaughter_intake = pd.Series([60,70,50,100,110])
 #slaughter_intake = pd.Series([95,45,110,120,20])
