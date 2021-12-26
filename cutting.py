@@ -3,11 +3,11 @@ import pandas as pd
 #max = 148478.5713
 
 dict_schedule = {
+    0 : pd.Series([0, 0, 0, 0, 0, 0], index=['g1', 'g2', 'g3', 'g4', 'g5', 'sum']),
     1 : pd.Series([0, 0, 0, 0, 0, 0], index=['g1', 'g2', 'g3', 'g4', 'g5', 'sum']),
     2 : pd.Series([0, 0, 0, 0, 0, 0], index=['g1', 'g2', 'g3', 'g4', 'g5', 'sum']),
     3 : pd.Series([0, 0, 0, 0, 0, 0], index=['g1', 'g2', 'g3', 'g4', 'g5', 'sum']),
-    4 : pd.Series([0, 0, 0, 0, 0, 0], index=['g1', 'g2', 'g3', 'g4', 'g5', 'sum']),
-    5 : pd.Series([0, 0, 0, 0, 0, 0], index=['g1', 'g2', 'g3', 'g4', 'g5', 'sum']), 
+    4 : pd.Series([0, 0, 0, 0, 0, 0], index=['g1', 'g2', 'g3', 'g4', 'g5', 'sum']), 
     } 
 schedule = pd.DataFrame(dict_schedule)
 
@@ -19,8 +19,8 @@ stats = pd.DataFrame(dict_stats)
 
 def update_schedule(prepared, leftover, day):
     schedule[day+1] += prepared
-    if leftover.any() != 0:
-        schedule[(day+2)] += leftover 
+    if leftover.any() != 0:  
+        schedule[(day+2)] += leftover                 #tu si negdje stao
         
         
 
@@ -35,9 +35,8 @@ def prepare(intake, day):
     
     while (prepared.sum() < max_cap and leftover.any() > 5): 
         leftover = leftover - decrement
-        prepared = intake - leftover    
-        
-    update_schedule(prepared, leftover, day)
+        prepared = intake - leftover
+    update_schedule(prepared, leftover, day)      #sta ako u leftoveru ima preko 30000?
         
  
 #slaughter_intake = pd.Series([80,90,40,60,120])
@@ -49,7 +48,7 @@ slaughter_intake = pd.Series([120,70,20,100,80])
 for day, animals in enumerate(slaughter_intake):
     prepare(slaughter(animals), day)
 
-schedule.rename(columns={1: 'Mon', 2: 'Tue', 3: 'Wen', 4: 'Thu', 5: 'Fri'}, inplace=True)
+schedule.rename(columns={0: 'Mon', 1: 'Tue', 2: 'Wen', 3: 'Thu', 4: 'Fri'}, inplace=True)
 #print(schedule['Mon']['sum']+schedule['Tue']['sum']+schedule['Wen']['sum']+schedule['Thu']['sum']+schedule['Fri']['sum'])
 
 
