@@ -20,21 +20,20 @@ decrement=7*pd.Series([stats.transpose()['g1'].product(), stats.transpose()['g2'
 
 next_week = pd.Series([0,0,0,0,0,0], index=['g1', 'g2', 'g3', 'g4', 'g5', 'sum'])
 max_cap = 30000
-avg_pday = max_cap / stats['avg']['sum']
+#avg_pday = max_cap / stats['avg']['sum']
 
 def prepare(sl_intake):
     return sl_intake*stats['f']*stats['avg']
 
-intake = pd.Series([1000,70,50,40,50])
+intake = pd.Series([200,10,20,50,20])
 for day, animals in enumerate(intake):
     schedule[day]=prepare(animals)
 
-
-print(schedule)
+after_preparing = schedule.drop(columns=5)
 next_week = schedule[4]
 schedule = schedule.shift(1,axis=1)
 schedule[5]=0
-print(schedule)
+schedule.fillna(0, inplace=True)
 
 i=0
 j=0
@@ -48,8 +47,13 @@ for i in schedule:
            else: next_week = next_week.add(decrement, axis='rows')
            if schedule[i]['sum'] <= 30000: break;
        j += 1;
-       print(schedule)
-  
-print(schedule)
-print(next_week)
+
+schedule[5] = next_week
+schedule.rename(columns={0: 'Mon', 1: 'Tue', 2: 'Wen', 3: 'Thu', 4: 'Fri', 5: 'Nx_week'}, inplace=True)
+after_preparing.rename(columns={0: 'Mon', 1: 'Tue', 2: 'Wen', 3: 'Thu', 4: 'Fri', 5: 'Nx_week'}, inplace=True)
+intake.rename(index={0: 'Mon', 1: 'Tue', 2: 'Wen', 3: 'Thu', 4: 'Fri'}, inplace=True)
+print("Intake for this week, Mon - Fri is: \n" +str(intake))
+print("After slaughter each day, the distribution per group is the following: \n" +str(after_preparing))
+print("After optimising for max capacity of 30000kg per day, the schedule is;: \n" +str(schedule))
+
 

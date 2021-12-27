@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-import scipy as sp
+from scipy.stats import beta
 
 dict_schedule = {
     0 : pd.Series([0, 0, 0, 0, 0, 0], index=['g1', 'g2', 'g3', 'g4', 'g5', 'sum']),
@@ -21,3 +21,5 @@ decrement=pd.Series([stats.transpose()['g1'].product(), stats.transpose()['g2'].
 next_week = pd.Series([0,0,0,0,0,0], index=['g1', 'g2', 'g3', 'g4', 'g5', 'sum'])
 max_cap = 30000
 
+x = beta.pdf(120, stats['avg'], stats['f'])
+print(x)
