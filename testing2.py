@@ -6,6 +6,7 @@ dict_schedule = {
     2 : pd.Series([0, 0, 0, 0, 0, 0], index=['g1', 'g2', 'g3', 'g4', 'g5', 'sum']),
     3 : pd.Series([0, 0, 0, 0, 0, 0], index=['g1', 'g2', 'g3', 'g4', 'g5', 'sum']),
     4 : pd.Series([0, 0, 0, 0, 0, 0], index=['g1', 'g2', 'g3', 'g4', 'g5', 'sum']),
+    5 : pd.Series([0, 0, 0, 0, 0, 0], index=['g1', 'g2', 'g3', 'g4', 'g5', 'sum']),
     } 
 schedule = pd.DataFrame(dict_schedule)
 
@@ -15,7 +16,7 @@ dict_stats = {
 }
 stats = pd.DataFrame(dict_stats)
 stats['avg']['sum'] = stats.transpose().product().sum()
-decrement=pd.Series([stats.transpose()['g1'].product()/100, stats.transpose()['g2'].product()/100,stats.transpose()['g3'].product()/100,stats.transpose()['g4'].product()/100,stats.transpose()['g5'].product()/100,stats.transpose()['sum'].product()/100], index=['g1', 'g2', 'g3', 'g4', 'g5', 'sum'])
+decrement=7*pd.Series([stats.transpose()['g1'].product(), stats.transpose()['g2'].product(),stats.transpose()['g3'].product(),stats.transpose()['g4'].product(),stats.transpose()['g5'].product()/100,stats.transpose()['sum'].product()], index=['g1', 'g2', 'g3', 'g4', 'g5', 'sum'])/100
 
 next_week = pd.Series([0,0,0,0,0,0], index=['g1', 'g2', 'g3', 'g4', 'g5', 'sum'])
 max_cap = 30000
@@ -24,7 +25,7 @@ avg_pday = max_cap / stats['avg']['sum']
 def prepare(sl_intake):
     return sl_intake*stats['f']*stats['avg']
 
-intake = pd.Series([10,70,50,150,50])
+intake = pd.Series([1000,70,50,40,50])
 for day, animals in enumerate(intake):
     schedule[day]=prepare(animals)
 
@@ -32,10 +33,9 @@ for day, animals in enumerate(intake):
 print(schedule)
 next_week = schedule[4]
 schedule = schedule.shift(1,axis=1)
-schedule.fillna(0, inplace=True)
+schedule[5]=0
 print(schedule)
-schedule[5] =0
-print(schedule)
+
 i=0
 j=0
 

@@ -1,4 +1,6 @@
 import pandas as pd
+import numpy as np
+import scipy as sp
 
 dict_schedule = {
     0 : pd.Series([0, 0, 0, 0, 0, 0], index=['g1', 'g2', 'g3', 'g4', 'g5', 'sum']),
@@ -16,9 +18,6 @@ dict_stats = {
 stats = pd.DataFrame(dict_stats)
 stats['avg']['sum'] = stats.transpose().product().sum()
 decrement=pd.Series([stats.transpose()['g1'].product(), stats.transpose()['g2'].product(),stats.transpose()['g3'].product(),stats.transpose()['g4'].product(),stats.transpose()['g5'].product(),stats.transpose()['sum'].product()], index=['g1', 'g2', 'g3', 'g4', 'g5', 'sum'])
-
 next_week = pd.Series([0,0,0,0,0,0], index=['g1', 'g2', 'g3', 'g4', 'g5', 'sum'])
 max_cap = 30000
 
-print(decrement['sum'])
-print(decrement.sum())
