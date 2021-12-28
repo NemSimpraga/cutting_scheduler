@@ -21,17 +21,15 @@ dict_stats = {                                                                  
 } 
 stats = pd.DataFrame(dict_stats)                                                             #converting stats to pd.Dataframe
 stats['avg']['sum'] = stats.transpose().product().sum()                                      #calculating the aggregated average weight weight of an animal -> ~380.715
-decrement=7*pd.Series([stats.transpose()['g1'].product(), stats.transpose()['g2'].product(),stats.transpose()['g3'].product(),stats.transpose()['g4'].product(),stats.transpose()['g5'].product()/100,stats.transpose()['sum'].product()], index=['g1', 'g2', 'g3', 'g4', 'g5', 'sum'])/100
-#ABOVE LINE# -> creating a pd.Series to use for decrementing/incrementing schedule capacity, using the given stats to preserve weight ratios
-
+decrement=7*pd.Series([stats.transpose()['g1'].product(), stats.transpose()['g2'].product(),stats.transpose()['g3'].product(),stats.transpose()['g4'].product(),stats.transpose()['g5'].product(),stats.transpose()['sum'].product()], index=['g1', 'g2', 'g3', 'g4', 'g5', 'sum'])/100
+                                                                                             #ABOVE LINE# -> creating a pd.Series to use for decrementing/incrementing schedule capacity, using the given stats to preserve weight ratios
 next_week = pd.Series([0,0,0,0,0,0], index=['g1', 'g2', 'g3', 'g4', 'g5', 'sum'])            #initialising pd.Series for leftover weight for next week's cutting scheduke
 max_cap = 30000
-#avg_pday = max_cap / stats['avg']['sum']                       #VARIABLE NOT USED -> average number of animals to be taken in per day
 
 def prepare(sl_intake):                                         #function used to return pd.Series from integer number of intake animals, according to given stats
     return sl_intake*stats['f']*stats['avg']
 
-intake = pd.Series([200,70,60,20,150])                           #defining this week's intake
+intake = pd.Series([120,100,78,20,150])                           #defining this week's intake
 for day, animals in enumerate(intake):                          #creating initial non-shifted & non-optimised schedule
     schedule[day]=prepare(animals)
 
@@ -51,8 +49,9 @@ for i in schedule:                                                              
            if j+i+1 <= 4:                                                         #if the next day is this week
                schedule[j+i+1] = schedule[j+i+1].add(decrement, axis='rows')        #then add the decremented amount to that next day
            else: next_week = next_week.add(decrement, axis='rows')                  #else add the decremented amount for next week
-           if schedule[i]['sum'] <= max_cap: break;                               #if at any point during the decrementation of current day 
-       j += 1;                                                                    #we reach the current day's max_cap, break the decrement loop and increase increment day by one
+           if schedule[i]['sum'] <= max_cap:  i+= 1; break;  
+       print(schedule)                                                            #if at any point during the decrementation of current day 
+       if j+i+1 <= 4: j += 1;                                                                  #we reach the current day's max_cap, break the decrement loop and increase increment day by one
 
 schedule[5] = next_week
 schedule.rename(columns={0: 'Mon', 1: 'Tue', 2: 'Wen', 3: 'Thu', 4: 'Fri', 5: 'Nx_week'}, inplace=True)
