@@ -42,8 +42,10 @@ i=0                                                                             
 j=0                                                                             #counter used for looping through days to be incremented
 
                                                                                 #DISCLAIMER: I do realise the O(n)^2 (at the least) horribleness of the next bit of code :) 
-for i in schedule:                                                              #for each day in schedule do the following:               
+for i in schedule:
+    print("i: "+ str(i))                                                              #for each day in schedule do the following:               
     for j in schedule:
+        print("j: " +str(j))
         while schedule[i]['sum'] > max_cap + decrement['sum']:
             while schedule[j+i+1]['sum'] < max_cap + decrement['sum']:
                 schedule[i] = schedule[i].sub(decrement, axis='rows')
