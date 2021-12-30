@@ -1,16 +1,18 @@
 import pandas as pd
-import statisticss
+import create_data_model
 
 class Day:
-    def __init__(self, capacity=None):
+    def __init__(self, name, capacity=None):
         self.capacity = capacity
+        self.name = name
+        self.decrement = capacity / 700
         self.sum = self.capacity.sum()
         self.nextday = None
     def increase(self):
-        self.capacity += statisticss.decrement
+        self.capacity += self.decrement
         self.sum = self.capacity.sum()
     def decrease(self):
-        self.capacity -= statisticss.decrement
+        self.capacity -= self.decrement
         self.sum = self.capacity.sum()
 
 class Week:
@@ -22,49 +24,46 @@ class Week:
     def printschedule(self):
         current = self.headval
         while current is not None:
-            print("Capacity of current day: \n " +str(current.capacity))
+            print(current.name +": \n" + current.capacity.to_string())
             print("Sum: " +str(current.sum))
-            #print("Leftover of current day: \n " +str(current.leftover))
+            #print("Current leftover: \n " + str(self.leftover))
             current = current.nextday
     
     def optimise(self):
         current = self.headval
         while current is not None:
-            if current.sum > statisticss.max_cap:
-                while current.sum > statisticss.max_cap:
+            if current.sum > create_data_model.max_cap:
+                while current.sum > create_data_model.max_cap:
                     current.decrease()
-                    if current.nextday is not None: 
-                        current.nextday.capacity += statisticss.decrement
-                        self.leftover += statisticss.decrement
-                    else: self.nextweek += statisticss.decrement
-                current = current.nextday
-            elif current.sum < statisticss.max_cap and self.leftover.sum() > 0:
-                while current.sum < (statisticss.max_cap + statisticss.decrement.sum()) and self.leftover.sum() > 0:
+                    self.leftover += current.decrement
+                current = current.nextday; print("Leftover: \n" +self.leftover.to_string())
+            elif current.sum < create_data_model.max_cap and self.leftover.sum() > 0:
+                while current.sum < create_data_model.max_cap and self.leftover.sum() > 0:
                     current.increase()
-                    current.capacity -= statisticss.decrement
-                    self.leftover -= statisticss.decrement
-                current = current.nextday
-            else: current = current.nextday
-            
+                    self.leftover -= current.decrement
+                current = current.nextday; print("Leftover: \n" +self.leftover.to_string())
+            else: current = current.nextday; print("Leftover: \n" +self.leftover.to_string())
+        self.nextweek += self.leftover; print("Leftover: \n" +self.leftover.to_string())
 
-intake = pd.Series([120,50,70,10,10])   
+intake = pd.Series([10,500,40,300,10])   
 
-Mon = Day(statisticss.prepare(pd.Series([0.0, 0.0, 0.0, 0.0, 0.0], index=['g1', 'g2', 'g3', 'g4', 'g5'])))
-Tue = Day(statisticss.prepare(intake[0]))
-Wen = Day(statisticss.prepare(intake[1]))
-Thu = Day(statisticss.prepare(intake[2]))
-Fri = Day(statisticss.prepare(intake[3]))
+Mon = Day('Monday', create_data_model.n_deterministic(0))
+Tue = Day('Tuesday', create_data_model.n_deterministic(intake[0]))
+Wen = Day('Wednesday', create_data_model.n_deterministic(intake[1]))
+Thu = Day('Thursday', create_data_model.n_deterministic(intake[2]))
+Fri = Day('Friday', create_data_model.n_deterministic(intake[3]))
 
 schedule = Week()
-schedule.nextweek = statisticss.prepare(intake[4])
-schedule.headval = Tue
+schedule.nextweek = create_data_model.n_deterministic(intake[4])
+schedule.headval = Mon
 
 Mon.nextday = Tue
 Tue.nextday = Wen
 Wen.nextday = Thu
 Thu.nextday = Fri
 
-schedule.printschedule()
+#schedule.printschedule()
 print("##########################################################")
 schedule.optimise()
-schedule.printschedule()
+#schedule.printschedule()
+#print(schedule.nextweek)
