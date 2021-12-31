@@ -1,5 +1,5 @@
 import pandas as pd
-import create_data_model
+import data_model
 
 class Day:
     def __init__(self, name, capacity=None):
@@ -26,35 +26,35 @@ class Week:
         while current is not None:
             print(current.name +": \n" + current.capacity.to_string())
             print("Sum: " +str(current.sum))
-            #print("Current leftover: \n " + str(self.leftover))
             current = current.nextday
+        print("Next week: \n" + self.nextweek.to_string() + '\nsum ' +str(self.nextweek.sum()))
     
     def optimise(self):
         current = self.headval
         while current is not None:
-            if current.sum > create_data_model.max_cap:
-                while current.sum > create_data_model.max_cap:
+            if current.sum > data_model.max_cap:
+                while current.sum > data_model.max_cap:
                     current.decrease()
                     self.leftover += current.decrement
-                current = current.nextday; print("Leftover: \n" +self.leftover.to_string())
-            elif current.sum < create_data_model.max_cap and self.leftover.sum() > 0:
-                while current.sum < create_data_model.max_cap and self.leftover.sum() > 0:
+                current = current.nextday; 
+            elif current.sum < data_model.max_cap and self.leftover.sum() > 0:
+                while current.sum < data_model.max_cap and self.leftover.sum() > 0:
                     current.increase()
                     self.leftover -= current.decrement
-                current = current.nextday; print("Leftover: \n" +self.leftover.to_string())
-            else: current = current.nextday; print("Leftover: \n" +self.leftover.to_string())
-        self.nextweek += self.leftover; print("Leftover: \n" +self.leftover.to_string())
+                current = current.nextday; 
+            else: current = current.nextday; 
+        self.nextweek += self.leftover; 
 
-intake = pd.Series([10,500,40,300,10])   
+intake = pd.Series([120,70,65,100,50])   
 
-Mon = Day('Monday', create_data_model.n_deterministic(0))
-Tue = Day('Tuesday', create_data_model.n_deterministic(intake[0]))
-Wen = Day('Wednesday', create_data_model.n_deterministic(intake[1]))
-Thu = Day('Thursday', create_data_model.n_deterministic(intake[2]))
-Fri = Day('Friday', create_data_model.n_deterministic(intake[3]))
+Mon = Day('Monday', data_model.n_deterministic(0))
+Tue = Day('Tuesday', data_model.n_deterministic(intake[0]))
+Wen = Day('Wednesday', data_model.n_deterministic(intake[1]))
+Thu = Day('Thursday', data_model.n_deterministic(intake[2]))
+Fri = Day('Friday', data_model.n_deterministic(intake[3]))
 
 schedule = Week()
-schedule.nextweek = create_data_model.n_deterministic(intake[4])
+schedule.nextweek = data_model.n_deterministic(intake[4])
 schedule.headval = Mon
 
 Mon.nextday = Tue
@@ -62,8 +62,14 @@ Tue.nextday = Wen
 Wen.nextday = Thu
 Thu.nextday = Fri
 
-#schedule.printschedule()
-print("##########################################################")
+print("Unoptimised schedule; capacities shown are ready for cutting the next day:")
+print(data_model.create_table(Tue.capacity, Wen.capacity, Thu.capacity, Fri.capacity, schedule.nextweek, schedule.leftover))
+print("Schedule after being shifted to the right:")
+print(data_model.create_table(Mon.capacity, Tue.capacity, Wen.capacity, Thu.capacity, Fri.capacity, schedule.nextweek))
+
 schedule.optimise()
-#schedule.printschedule()
-#print(schedule.nextweek)
+
+print("Cutting schedule for specified intake plan, after optimisation:")
+print(data_model.create_table(Mon.capacity, Tue.capacity, Wen.capacity, Thu.capacity, Fri.capacity, schedule.nextweek))
+
+
