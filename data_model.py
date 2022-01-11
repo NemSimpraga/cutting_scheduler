@@ -7,7 +7,7 @@ dict_stats = {
     'stddev' : pd.Series([4.9, 5.1, 5.0, 5.4, 5.9], index=['g1', 'g2', 'g3', 'g4', 'g5'])
 }
 stats = pd.DataFrame(dict_stats)
-
+agg_avg = stats['avg']['g1']*stats['f']['g1']+stats['avg']['g2']*stats['f']['g2']+stats['avg']['g3']*stats['f']['g3']+stats['avg']['g4']*stats['f']['g4']+stats['avg']['g5']*stats['f']['g5']
 max_cap = 30000
 
 def n_deterministic(animals):
@@ -34,4 +34,7 @@ def create_table(mon,tue,wen,thu,fri,nxweek):
     'Fri' : fri.append(pd.Series([fri.sum()], index=['sum'])),
     'Next week' : nxweek.append(pd.Series([nxweek.sum()], index=['sum'])),
     }                                                                                         
-    return pd.DataFrame(dict_schedule).to_string()   
+    return pd.DataFrame(dict_schedule).to_string()
+
+animals = "120f"
+print(animals.isdigit())
