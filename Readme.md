@@ -42,7 +42,8 @@ Specific optimisation logic is described in comments in the python files themsel
 ### Extra note
 The solution has one flaw in the _data_model_ module, _distribute_ function:
 - the data distribution model for each group is created via the numpy.random.normal function, which accepts the _loc_ (average weight), _scale_ (standard deviation) and _size_ (sample size) arguments
-- the _size_ parameter_ is calculated by rounding the product of number of animals taken in and the frequency of every respective group
+- the _size_ parameter is calculated by rounding the product of number of animals taken in and the frequency of every respective group
 - the rounding of that parameter is what causes the schedule to sometimes miss or have one more animal than what is originally input for distribution
-- if the output has one more or less animal than intended, depends on the modulus of animal intake and number 7, since the frequencies of g1, g2 vs g3, g4, g5 are 2/7 and 1/7 respectively
+- whether the output has one more or one less animal than intended, depends on the modulus of animal intake number and 7, since the frequencies of g1, g2 vs g3, g4, g5 are 2/7 and 1/7 respectively
+
 This flaw is patched by adding or removing one animal from a random group, depending on if the output is missing or has one more animal than intended
