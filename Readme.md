@@ -36,6 +36,7 @@ The solution to the problem was based on the FIFO principle (_First In First Out
 1. Cut all carcasses as soon as you can, which is the following day
 2. Any intake from Friday is automatically transferred to next week for cutting, since cutting can occur only on weekdays
 3. Monday cutting schedule is empty because of fact #1) above and the assumption that we don't have the previous week's leftover intake
+ 
 Specific optimisation logic is described in comments in the python files themselves
 
 ### Extra note
